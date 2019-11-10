@@ -1,0 +1,50 @@
+INPUT
+String X: ATTTTA
+String Y: ATTA
+
+------------------------------------------
+OUTPUT
+Score matrix:
+          A    T    T    A
+     0   -2   -4   -6   -8
+A   -2    2    0   -2   -4
+T   -4    0    4    2    0
+T   -6   -2    2    6    4
+T   -8   -4    0    4    5
+T  -10   -6   -2    2    3
+A  -12   -8   -4    0    4
+
+Number of paths:6
+
+ATTTTA
+|  |||
+A--TTA
+PercentIdentity:66%
+
+ATTTTA
+| | ||
+A-T-TA
+PercentIdentity:66%
+
+ATTTTA
+||  ||
+AT--TA
+PercentIdentity:66%
+
+ATTTTA
+| || |
+A-TT-A
+PercentIdentity:66%
+
+ATTTTA
+|| | |
+AT-T-A
+PercentIdentity:66%
+
+ATTTTA
+|||  |
+ATT--A
+PercentIdentity:66%
+
+Strings are not of equal length
+Hammingdistance: not applicable

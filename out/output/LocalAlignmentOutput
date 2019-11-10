@@ -1,0 +1,22 @@
+INPUT
+String X: PAWHEAE
+String Y: HDAGAWGHEQ
+
+------------------------------------------
+OUTPUT
+Score matrix:
+          H    D    A    G    A    W    G    H    E    Q
+     0    0    0    0    0    0    0    0    0    0    0
+P    0    0    0    0    0    0    0    0    0    0    0
+A    0    0    0    2    0    2    0    0    0    0    0
+W    0    0    0    0    1    0    4    2    0    0    0
+H    0    2    0    0    0    0    2    3    4    2    0
+E    0    0    1    0    0    0    0    1    2    6    4
+A    0    0    0    3    1    2    0    0    0    4    5
+E    0    0    0    1    2    0    1    0    0    2    3
+
+AW-HE
+|| ||
+AWGHE
+
+PercentIdentity:80%

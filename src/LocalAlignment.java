@@ -39,6 +39,13 @@ public class LocalAlignment {
         String X = "PAWHEAE";
         String Y = "HDAGAWGHEQ";
 
+        System.out.println("INPUT");
+        System.out.println("String X: " + X);
+        System.out.println("String Y: " + Y);
+        System.out.println();
+        System.out.println("------------------------------------------");
+        System.out.println("OUTPUT");
+
         int F[][] = new int[MAX_LENGTH+1][MAX_LENGTH+1];     /* score matrix */
         int trace[][] = new int[MAX_LENGTH+1][MAX_LENGTH+1]; /* trace matrix */
         char[] alignX = new char[MAX_LENGTH*2];	/* aligned X sequence */
@@ -215,7 +222,7 @@ public class LocalAlignment {
 
 
 
-        System.out.println("PercentageIdentity:" + ((int)(getPercentageIdentity(alignmentNum, alignmentLength)*100)) + "%");
+        System.out.println("PercentIdentity:" + ((int)(getPercentageIdentity(alignmentNum, alignmentLength)*100)) + "%");
     }
 
     private static double getPercentageIdentity(int alignmentNum, int divisionNum){

@@ -1,0 +1,21 @@
+INPUT
+String X: ACAGYT
+String Y: ATACGT
+
+------------------------------------------
+OUTPUT
+Score matrix:
+          A    T    A    C    G    T
+     0   -2   -4   -6   -8  -10  -12
+A   -2    2    0   -2   -4   -6   -8
+C   -4    0    1   -1    0   -2   -4
+A   -6   -2   -1    3    1   -1   -3
+G   -8   -4   -3    1    2    3    1
+Y  -10   -6   -5   -1    0    1    2
+T  -12   -8   -4   -3   -2   -1    3
+
+ACAGYT
+| |  |
+ATACGT
+
+Levenshtein distance: 3

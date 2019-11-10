@@ -32,8 +32,15 @@ public class Levenshtein {
 
         int alignmentNum = 0;
 
-        String X = "ATCGAT";
+        String X = "ACAGYT";
         String Y = "ATACGT";
+
+        System.out.println("INPUT");
+        System.out.println("String X: " + X);
+        System.out.println("String Y: " + Y);
+        System.out.println();
+        System.out.println("------------------------------------------");
+        System.out.println("OUTPUT");
 
         int F[][] = new int[MAX_LENGTH+1][MAX_LENGTH+1];     /* score matrix */
         int trace[][] = new int[MAX_LENGTH+1][MAX_LENGTH+1]; /* trace matrix */
@@ -199,6 +206,6 @@ public class Levenshtein {
         System.out.println();
 
 
-        System.out.println("Levenshteindistance: " + (alignmentLength - alignmentNum));
+        System.out.println("Levenshtein distance: " + (alignmentLength - alignmentNum));
     }
 }
