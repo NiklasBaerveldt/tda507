@@ -200,26 +200,5 @@ public class Levenshtein {
 
 
         System.out.println("Levenshteindistance: " + (alignmentLength - alignmentNum));
-        System.out.println("Hammingdistance:" + (getHammingDistance(X,Y)));
-        System.out.println("PercentageIdentity:" + ((int)(getPercentageIdentity(alignmentNum, alignmentLength)*100)) + "%");
-    }
-
-    private static double getPercentageIdentity(int alignmentNum, int divisionNum){
-        return (double)alignmentNum/(double)divisionNum;
-    }
-
-    private static int getHammingDistance(String s1, String s2){
-        if(s1.length()!=s2.length()){
-            System.out.println("Strings are not of equal length");
-        }
-        int hammingDistance = 0;
-        int len = s1.length();
-
-        for(int i = 0; i<len; i++){
-            if(s1.charAt(i) != s2.charAt(i)){
-                hammingDistance++;
-            }
-        }
-        return hammingDistance;
     }
 }

@@ -3,6 +3,7 @@ public class ModifiedGlobalAlignment {
     //The calculation of the percent identity is calculated by
     //dividing the matching pairs with the length of the alignment.
 
+
     public static final int MAX_LENGTH = 100;
 
     public static final int MATCH_SCORE = 2;
@@ -17,12 +18,11 @@ public class ModifiedGlobalAlignment {
     public static void main(String[] args) {
 
         int i, j;
-        int alignmentLength, score, tmp;
+        int score, tmp;
 
-        int alignmentNum = 0;
 
-        String X = "ATTTTA";
-        String Y = "ATTA";
+        String X = "ATCGAT";
+        String Y = "AT";
 
         int F[][] = new int[MAX_LENGTH + 1][MAX_LENGTH + 1];     /* score matrix */
         int trace[][] = new int[MAX_LENGTH + 1][MAX_LENGTH + 1]; /* trace matrix */
@@ -120,26 +120,30 @@ public class ModifiedGlobalAlignment {
         i = m;
         j = n;
 
-        AlignmentTree alignmentTreeRoot = new AlignmentTree();
-        traceBack(alignmentTreeRoot,trace,X,Y,i,j);
+        OptimalAlignmentTree optimalAlignmentTreeRoot = new OptimalAlignmentTree();
+        traceBack(optimalAlignmentTreeRoot,trace,X,Y,i,j);
 
-        alignmentTreeRoot.printTree();
-        System.out.println("Number of paths:" + alignmentTreeRoot.getAlignmentTreeSize());
+
+        System.out.println("Number of paths:" + optimalAlignmentTreeRoot.getTotalNumberOfBranches());
         System.out.println();
-        System.out.println();
+        optimalAlignmentTreeRoot.printTree();
 
+        int hammingDistance = getHammingDistance(X,Y);
+        if(hammingDistance == -1){
+            System.out.println("Hammingdistance: not applicable");
+        }
+        else{
+            System.out.println("Hammingdistance:" + (getHammingDistance(X, Y)));
+        }
 
-       // System.out.println("Hammingdistance:" + (getHammingDistance(X, Y)));
-       // System.out.println("PercentageIdentity:" + ((int) (getPercentageIdentity(alignmentNum, alignmentLength) * 100)) + "%");
     }
 
-    private static double getPercentageIdentity(int alignmentNum, int divisionNum) {
-        return (double) alignmentNum / (double) divisionNum;
-    }
+
 
     private static int getHammingDistance(String s1, String s2) {
         if (s1.length() != s2.length()) {
             System.out.println("Strings are not of equal length");
+            return -1;
         }
         int hammingDistance = 0;
         int len = s1.length();
@@ -152,57 +156,93 @@ public class ModifiedGlobalAlignment {
         return hammingDistance;
     }
 
-    private static void traceBack(AlignmentTree alignmentTree, int[][] trace, String X, String Y, int i, int j){ // denna kan läggas in i alignment tree som buildtree
+    private static void traceBack(OptimalAlignmentTree optimalAlignmentTree, int[][] trace, String X, String Y, int i, int j){ // denna kan läggas in i alignment tree som buildtree
+        OptimalAlignmentTree newBranch;
 
+        if ( trace[i][j] != STOP ) {
 
-        int possibleDirs = trace[i][j];
+            switch ( trace[i][j] ) {
 
-        if(possibleDirs != STOP) {
-            if (possibleDirs >= 100) { //Diag
+                case DIAG:
+                    newBranch = optimalAlignmentTree.growAlignmentTreeBranch();
+                    branchDiag(newBranch,trace,X,Y,i,j);
+                    break;
 
-                //i--;
-                //j--;
-                AlignmentTree newBranch = alignmentTree.generateAlignmentTree();
-                newBranch.setAlignmentCharX(X.charAt(i - 1));
-                newBranch.setAlignmentCharY(Y.charAt(j - 1));
-                traceBack(newBranch, trace, X, Y, i - 1, j - 1);
-            }
-            // om den kan gå både diag och vänster, byts till - eller annat knas.
-            // den måste skicka en branch in i tracen som får de aktuella värdena
-            if ((possibleDirs % 100) >= 10) {//left
-                //j--;
-                AlignmentTree newBranch = alignmentTree.generateAlignmentTree();
-                newBranch.setAlignmentCharX('-');
-                newBranch.setAlignmentCharY(Y.charAt(j - 1));
-                traceBack(newBranch, trace, X, Y, i, j - 1);
-            }
+                case LEFT:
+                    newBranch = optimalAlignmentTree.growAlignmentTreeBranch();
+                    branchLeft(newBranch,trace,X,Y,i,j);
+                    break;
 
-            if ((possibleDirs % 10) == 1) {//up
+                case UP:
+                    newBranch = optimalAlignmentTree.growAlignmentTreeBranch();
+                    branchUp(newBranch,trace,X,Y,i,j);
+                    break;
 
-                //i--;
-                AlignmentTree newBranch = alignmentTree.generateAlignmentTree();
-                newBranch.setAlignmentCharX(X.charAt(i - 1));
-                newBranch.setAlignmentCharY('-');
-                traceBack(newBranch, trace, X, Y, i - 1, j);
+                case (DIAG + LEFT):
+                    newBranch = optimalAlignmentTree.growAlignmentTreeBranch();
+                    branchDiag(newBranch,trace,X,Y,i,j);
+
+                    newBranch = optimalAlignmentTree.growAlignmentTreeBranch();
+                    branchLeft(newBranch,trace,X,Y,i,j);
+                    break;
+
+                case (DIAG + UP):
+                    newBranch = optimalAlignmentTree.growAlignmentTreeBranch();
+                    branchDiag(newBranch,trace,X,Y,i,j);
+
+                    newBranch = optimalAlignmentTree.growAlignmentTreeBranch();
+                    branchUp(newBranch,trace,X,Y,i,j);
+                    break;
+
+                case (UP + LEFT):
+                    newBranch = optimalAlignmentTree.growAlignmentTreeBranch();
+                    branchUp(newBranch,trace,X,Y,i,j);
+
+                    newBranch = optimalAlignmentTree.growAlignmentTreeBranch();
+                    branchLeft(newBranch,trace,X,Y,i,j);
+                    break;
+
+                case(UP + LEFT + DIAG):
+                    newBranch = optimalAlignmentTree.growAlignmentTreeBranch();
+                    branchUp(newBranch,trace,X,Y,i,j);
+
+                    newBranch = optimalAlignmentTree.growAlignmentTreeBranch();
+                    branchLeft(newBranch,trace,X,Y,i,j);
+
+                    newBranch = optimalAlignmentTree.growAlignmentTreeBranch();
+                    branchDiag(newBranch,trace,X,Y,i,j);
+                    break;
             }
         }
-        else{
+        else {
 
-            if (i > 0) {
-                AlignmentTree newBranch = alignmentTree.generateAlignmentTree();
-                newBranch.setAlignmentCharX(X.charAt(i - 1));
-                newBranch.setAlignmentCharY('-');
-                traceBack(newBranch, trace, X, Y, i - 1, j);
+            if ( i>0 ) {
+                newBranch = optimalAlignmentTree.growAlignmentTreeBranch();
+                branchUp(newBranch,trace,X,Y,i,j);
             }
 
-            if (j > 0) {
-                AlignmentTree newBranch = alignmentTree.generateAlignmentTree();
-                newBranch.setAlignmentCharX('-');
-                newBranch.setAlignmentCharY(Y.charAt(j - 1));
-                traceBack(newBranch, trace, X, Y, i, j - 1);
+            if ( j>0 ) {
+                newBranch = optimalAlignmentTree.growAlignmentTreeBranch();
+                branchLeft(newBranch,trace,X,Y,i,j);
             }
-
         }
+    }
 
+    private static void branchUp(OptimalAlignmentTree newBranch, int[][] trace, String X, String Y, int i, int j){
+        newBranch.setAlignmentCharX(X.charAt(i - 1));
+        newBranch.setAlignmentCharY('-');
+        traceBack(newBranch, trace, X, Y, i - 1, j);
+    }
+
+    private static void branchDiag(OptimalAlignmentTree newBranch, int[][] trace, String X, String Y, int i, int j){
+        newBranch.setAlignmentCharX(X.charAt(i - 1));
+        newBranch.setAlignmentCharY(Y.charAt(j - 1));
+        traceBack(newBranch, trace, X, Y, i - 1, j - 1);;
+    }
+
+    private static void branchLeft(OptimalAlignmentTree newBranch, int[][] trace, String X, String Y, int i, int j){
+        newBranch.setAlignmentCharX('-');
+        newBranch.setAlignmentCharY(Y.charAt(j - 1));
+        traceBack(newBranch, trace, X, Y, i, j - 1);
     }
 }
